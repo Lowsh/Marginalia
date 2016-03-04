@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="PageFormatting_Main.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+		<script src="formatting.js"></script>
+		<title>Page Formatting</title>
+	</head>
+
+	<body>
+		<header>
+			<h1>COMIC PAGE FORMAT CALCULATOR</h1>
+		</header>
+		
+		<main>
+			<form id="calc">
+				<div class="inputContain" id="print">
+					<h3>Print Size</h3>
+					<p>Width (in.):</p>
+					<input type="number" id="printX" value="5.5">
+					<p>Height (in.):</p>
+					<input type="number" id="printY" value="8.5">
+				</div>
+				<div class="inputContain" id="work">
+					<h3>Work Medium Size</h3>
+					<p>Width (in.):</p>
+					<input type="number" id="workX" value="11">
+					<p>Height (in.):</p>
+					<input type="number" id="workY" value="14">
+					
+				</div>
+
+				
+			</form>
+			<div id="submission">
+				<input id="calculate" type="button" value="Calculate Options"></input>
+			</div>
+
+			<h3 class="noForm">Live Area Dimensions</h3>
+			<div id="results">
+				
+
+			</div>
+		</main>
+	</body>
+</html>
+
