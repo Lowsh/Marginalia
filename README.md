@@ -24,3 +24,4 @@ The dimensions are calculated in Inches and the options divisible by 1/16th or 1
   b. free hand and snap to inches grid forming of panel divisions
   c. add gutter spacing between panels and calculatons
 5. Export SVG?
+6. Data Validator for inputs
