@@ -20,8 +20,9 @@ $(document).ready(function() {
 		var workY = Number($("#workY").val());
 		console.log(workX + " " + workY);
 
-		/*int work size array*/
-		var workSizes = [];
+
+		//int WorkSizes object
+		var WorkSizes = {};
 
 
 		/*function finds proportion of known x and y*/
@@ -38,40 +39,37 @@ $(document).ready(function() {
 			for(var x = minX, y = minY; x <= maxX; x += sixteenths) {
 				var y = x * prop;
 				if (y < maxY) {
-					workSizes.push([x, y]);
+					var name = x + "x" + y;
+					WorkSizes[name] = {dimensions: [x,y]};
+					console.log(WorkSizes[name].dimensions);
 				}else {
 					break;
 				}
 			}
-		}
-		function deviationControl(sizesArray)  {
-			for(var i = 0; i < sizesArray.length; i++){
-				if (sizesArray[i][1] % sixteenths != 0) {
-					console.log("DUMPED: " + sizesArray[i][1]);
-					sizesArray.splice(i,1);
-					i--;
+
+		}		
+		function deviationControl(sizesObj)  {
+			for(prop in sizesObj){
+				if (sizesObj[prop].dimensions[1] % sixteenths != 0) {
+
+					console.log("DUMPED: " + sizesObj[prop].dimensions);
+					delete sizesObj[prop];
 				} else {
-					console.log("PASS: " + sizesArray[i][1]);
+					console.log("PASS: " + sizesObj[prop].dimensions);
 				}
 			}
-		}
+		}		
 		findWorkSizes(printX, printY, workX, workY);
-		deviationControl(workSizes);
-		appendResults();
+		deviationControl(WorkSizes);
+		appendResults(WorkSizes);
 
-		/*append DOM with results*/
-		function appendResults() {
-			for (var i = 0; i < workSizes.length; i++) {
+		function appendResults(sizesObj) {
+			for (prop in sizesObj){
+				var size = sizesObj[prop].dimensions;
 				$("#results").append(
-					"<p>" + workSizes[i][0] + " x " + workSizes[i][1] + "</p>"
-					);
-				console.log(workSizes[i]);
+					"<p>" + size[0] + " x " + size[1] + "</p>"
+					);	
 			}
 		}
 	});
-	// set option to interval by .0625 (1/16) or 0.125 (1/8) use CONST
-	// start with newY and multiply by prop. 
-	// check if newX < workX
-	// round to nearest 8th
-	// store to array
 });
