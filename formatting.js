@@ -1,21 +1,23 @@
 $(document).ready(function() {	
 	console.log("ready!");
 
-		/*data validation*/
+		//data validation
 	$("printX, #printY, #workX, #workY").keyup(function(){
 		
 		});
 
 	$("#calculate").click(function(){
 		$("#results").children("p").remove();
-		/*int inches increment constant*/
+		
+		//int inches increment constant
 		const sixteenths = (1 / 16);
-		/*int print size variables*/
+		
+		//int print size variables
 		var printX = Number($("#printX").val());
 		var printY = Number($("#printY").val());
 		console.log(printX + " " + printY);
 
-		/*int paper size variables*/
+		//int paper size variables
 		var workX = Number($("#workX").val());
 		var workY = Number($("#workY").val());
 		console.log(workX + " " + workY);
@@ -24,15 +26,21 @@ $(document).ready(function() {
 		//int WorkSizes object
 		var WorkSizes = {};
 
+		//LayoutScheme Object Constructor
+		function LayoutScheme(x,y) {
+			this.dimensions = [x,y]
+			this.liveMargins = ""
+		}
 
-		/*function finds proportion of known x and y*/
+		//function finds proportion of known x and y
 		var findProportion = function(x,y) {
 			return y / x;
 		};
+		
 		var prop = findProportion(printX, printY);
 		console.log(prop);
 		
-		/*function uses proportion to find work size values*/
+		//function uses proportion to find work size values
 		
 		function findWorkSizes(minX,minY,maxX,maxY) {
 			console.log("finding sizes...");
@@ -40,7 +48,7 @@ $(document).ready(function() {
 				var y = x * prop;
 				if (y < maxY) {
 					var name = x + "x" + y;
-					WorkSizes[name] = {dimensions: [x,y]};
+					WorkSizes[name] = new LayoutScheme(x,y);
 					console.log(WorkSizes[name].dimensions);
 				}else {
 					break;
