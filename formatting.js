@@ -7,7 +7,7 @@ $(document).ready(function() {
 		});
 
 	$("#calculate").click(function(){
-		$("#results").children("p").remove();
+		$("#resultsList li").remove();
 		
 		//int inches increment constant
 		const sixteenths = (1 / 16);
@@ -30,6 +30,11 @@ $(document).ready(function() {
 		function LayoutScheme(x,y) {
 			this.dimensions = [x,y]
 			this.liveMargins = ""
+		}
+
+		//LayoutScheme Methods
+		LayoutScheme.prototype.toFraction = function(x,y) {
+				
 		}
 
 		//function finds proportion of known x and y
@@ -74,10 +79,18 @@ $(document).ready(function() {
 		function appendResults(sizesObj) {
 			for (prop in sizesObj){
 				var size = sizesObj[prop].dimensions;
-				$("#results").append(
-					"<p>" + size[0] + " x " + size[1] + "</p>"
+				$("ul#resultsList").append(
+					"<li class=\"resultObj\" id=\"" + prop + "\"><button>" + size[0] + " x " + size[1] + "</button></li>"
 					);	
 			}
 		}
+
+		//on click dimObj triggers visual info
+		$('li.resultObj button').on('click', function(){
+			$("li.resultObj button").removeClass("highlight");
+			var resultKey = $(this).closest("li").attr("id");
+			$(this).addClass("highlight");	
+			console.log(resultKey);	
+		});
 	});
 });

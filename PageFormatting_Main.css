@@ -38,7 +38,39 @@ h3 {
 h3.noForm{
 	color:rgba(192,192,192,1.0);
 }
+ul#resultsList {
+	padding-left:0em;
+}
+.resultObj {
+	list-style:none;
+	padding: .5em .5em .5em .5em;
+}
 
+.resultObj button {
+	display:block;
+	background:none;
+	border:none;
+	color:rgba(192,192,192,1.0);
+	font-weight:bold;
+	text-align:center;
+	margin: .5em auto .5em auto;
+}
+
+.resultObj button:focus{
+	outline:none;
+	background-color: rgba(192,192,192,0.5);
+	color:white;
+}
+.resultObj button:hover{
+	outline:none;
+	background-color: rgba(192,192,192,0.5);
+	color:white;
+}
+.resultObj button.highlight {
+	background-color: rgba(192,192,192,1.0);
+	color: white;
+	border:none;
+}
 form#calc {
 	margin: 1em auto 1em auto;
 	padding: 0em 1em 0em 1em;
@@ -89,7 +121,10 @@ input#calculate {
 	color:white;
 	border:none;
 	display:inline-block;
+
 }
+
+
 @media screen and (max-width: 706px) {
 	div.inputContain {
 		width:95%;
