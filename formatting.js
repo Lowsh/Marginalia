@@ -13,13 +13,13 @@ $(document).ready(function() {
 		const sixteenths = (1 / 16);
 		
 		//int print size variables
-		var printX = Number($("#printX").val());
-		var printY = Number($("#printY").val());
+		var printX = +$("#printX").val();
+		var printY = +$("#printY").val();
 		console.log(printX + " " + printY);
 
 		//int paper size variables
-		var workX = Number($("#workX").val());
-		var workY = Number($("#workY").val());
+		var workX = +$("#workX").val();
+		var workY = +$("#workY").val();
 		console.log(workX + " " + workY);
 
 
@@ -30,11 +30,32 @@ $(document).ready(function() {
 		function LayoutScheme(x,y) {
 			this.dimensions = [x,y]
 			this.liveMargins = ""
+			this.dimFrac = [];
 		}
 
 		//LayoutScheme Methods
-		LayoutScheme.prototype.toFraction = function(x,y) {
-				
+		LayoutScheme.prototype.toFraction = function() {
+			for (var i = 0; i < this.dimensions.length; i++) {
+				var dimString = String(this.dimensions[i]);
+				if (dimString.indexOf('.') < 0) { //Checks if string-number is whole number
+					this.dimFrac[i] = dimString; // Stores whole number dimension
+				} else {
+					var dec = '.' + dimString.split('.')[1]; // Parses Decimal from string 
+					var whole = dimString.split('.')[0]; // Parses whole number from string
+					var frac = function() {
+						var numerator = +dec * 16;
+						var denomArr = [[8,2],[4,4],[2,8],[1,16]];
+						for (var n = 0; n < denomArr.length; n++) {
+							if ((numerator % denomArr[n][0]) == 0) {
+								return (numerator / denomArr[n][0]) + "/" + denomArr[n][1];
+								break;
+							}
+						}
+					};	
+					this.dimFrac[i] = whole + " " + frac();
+				}	
+			}
+			console.log(this.dimFrac);
 		}
 
 		//function finds proportion of known x and y
@@ -42,19 +63,19 @@ $(document).ready(function() {
 			return y / x;
 		};
 		
-		var prop = findProportion(printX, printY);
-		console.log(prop);
+		var propYX = findProportion(printX, printY);
+		console.log(propYX);
 		
 		//function uses proportion to find work size values
 		
 		function findWorkSizes(minX,minY,maxX,maxY) {
 			console.log("finding sizes...");
 			for(var x = minX, y = minY; x <= maxX; x += sixteenths) {
-				var y = x * prop;
+				var y = x * propYX;
 				if (y < maxY) {
 					var name = x + "x" + y;
 					WorkSizes[name] = new LayoutScheme(x,y);
-					console.log(WorkSizes[name].dimensions);
+					//console.log(WorkSizes[name].dimensions);
 				}else {
 					break;
 				}
@@ -64,11 +85,12 @@ $(document).ready(function() {
 		function deviationControl(sizesObj)  {
 			for(prop in sizesObj){
 				if (sizesObj[prop].dimensions[1] % sixteenths != 0) {
-
-					console.log("DUMPED: " + sizesObj[prop].dimensions);
+					//console.log("DUMPED: " + sizesObj[prop].dimensions);
 					delete sizesObj[prop];
 				} else {
-					console.log("PASS: " + sizesObj[prop].dimensions);
+					var objDim = sizesObj[prop].dimensions;
+					sizesObj[prop].toFraction(objDim[0],objDim[1]);
+					//console.log("PASS: " + sizesObj[prop].dimensions);
 				}
 			}
 		}		
@@ -90,7 +112,9 @@ $(document).ready(function() {
 			$("li.resultObj button").removeClass("highlight");
 			var resultKey = $(this).closest("li").attr("id");
 			$(this).addClass("highlight");	
-			console.log(resultKey);	
+			console.log("element id: " + resultKey);	
+			console.log("object dimensions: " + WorkSizes[resultKey].dimensions);
+			console.log("object dimensions(frac): " + WorkSizes[resultKey].dimFrac);
 		});
 	});
 });
