@@ -1,120 +1,127 @@
-$(document).ready(function() {	
-	console.log("ready!");
-
-		//data validation
-	$("printX, #printY, #workX, #workY").keyup(function(){
-		
-		});
-
-	$("#calculate").click(function(){
-		$("#resultsList li").remove();
-		
-		//int inches increment constant
-		const sixteenths = (1 / 16);
-		
-		//int print size variables
-		var printX = +$("#printX").val();
-		var printY = +$("#printY").val();
-		console.log(printX + " " + printY);
-
-		//int paper size variables
-		var workX = +$("#workX").val();
-		var workY = +$("#workY").val();
-		console.log(workX + " " + workY);
-
-
-		//int WorkSizes object
-		var WorkSizes = {};
-
-		//LayoutScheme Object Constructor
-		function LayoutScheme(x,y) {
-			this.dimensions = [x,y]
-			this.liveMargins = ""
-			this.dimFrac = [];
-		}
-
-		//LayoutScheme Methods
-		LayoutScheme.prototype.toFraction = function() {
-			for (var i = 0; i < this.dimensions.length; i++) {
-				var dimString = String(this.dimensions[i]);
-				if (dimString.indexOf('.') < 0) { //Checks if string-number is whole number
-					this.dimFrac[i] = dimString; // Stores whole number dimension
-				} else {
-					var dec = '.' + dimString.split('.')[1]; // Parses Decimal from string 
-					var whole = dimString.split('.')[0]; // Parses whole number from string
-					var frac = function() {
-						var numerator = +dec * 16;
-						var denomArr = [[8,2],[4,4],[2,8],[1,16]];
-						for (var n = 0; n < denomArr.length; n++) {
-							if ((numerator % denomArr[n][0]) == 0) {
-								return (numerator / denomArr[n][0]) + "/" + denomArr[n][1];
-								break;
-							}
-						}
-					};	
-					this.dimFrac[i] = whole + " " + frac();
-				}	
+$(document).ready(function() {
+	var init = function() {
+	$("#resultsList li").remove();
+		Input.retrieveInput();
+		Layouts.findSchemes(
+			Input.printDimensions.xVal,
+			Input.printDimensions.yVal,
+			Input.canvasDimensions.xVal,
+			Input.canvasDimensions.yVal,
+			Input.printDimensions.ratio()
+			);
+	};
+	init();
+	$("#calc").keyup(init);
+});
+	//int inches increment constant
+	const sixteenths = (1 / 16);
+	//need data validation
+	
+	//Input Values object - Stores and retrieves
+	var Input = {
+		retrieveInput: function(){
+			var pDim = Input.printDimensions;
+			var cDim = Input.canvasDimensions;
+			pDim.xVal = +$("#printX").val();
+			pDim.yVal = +$("#printY").val();
+			cDim.xVal = +$("#canvasX").val();
+		    cDim.yVal = +$("#canvasY").val();
+		},
+		printDimensions: {
+			xVal: undefined,
+			yVal: undefined,
+			ratio: function() {
+				var r = Input.printDimensions.yVal / Input.printDimensions.xVal;
+				return r;
+				console.log("ratio is " + r);
 			}
-			console.log(this.dimFrac);
+		},
+		canvasDimensions: {
+			xVal: undefined,
+			yVal: undefined
 		}
+	};
 
-		//function finds proportion of known x and y
-		var findProportion = function(x,y) {
-			return y / x;
-		};
-		
-		var propYX = findProportion(printX, printY);
-		console.log(propYX);
-		
-		//function uses proportion to find work size values
-		
-		function findWorkSizes(minX,minY,maxX,maxY) {
+	var Layouts = {
+		Scheme: function (x,y) {
+			this.dimensions = [x,y]
+			this.liveMargins = []
+			this.dimFrac = [];
+		},
+		schemeArr: [],
+		findSchemes: function (pX,pY,cX,cY,ratio) {
 			console.log("finding sizes...");
-			for(var x = minX, y = minY; x <= maxX; x += sixteenths) {
-				var y = x * propYX;
-				if (y < maxY) {
-					var name = x + "x" + y;
-					WorkSizes[name] = new LayoutScheme(x,y);
-					//console.log(WorkSizes[name].dimensions);
+			Layouts.schemeArr = [];
+			for(var x = pX; pX <= cX; x += sixteenths) {
+				var y = x * ratio;
+				if (y < cY) {
+					console.log("x: " + x + " y: " + y);
+					Layouts.schemeArr.push(new Layouts.Scheme(x,y));
 				}else {
 					break;
 				}
 			}
-
-		}		
-		function deviationControl(sizesObj)  {
-			for(prop in sizesObj){
-				if (sizesObj[prop].dimensions[1] % sixteenths != 0) {
+			Layouts.removeNonSixteenths(Layouts.schemeArr);
+			console.log("found schemes: " + Layouts.schemeArr);
+		}, 
+		removeNonSixteenths: function(schemes)  {
+			for(var i = 0, len = schemes.length; i < len; i++){
+				if (schemes[i].dimensions[1] % sixteenths != 0) {
 					//console.log("DUMPED: " + sizesObj[prop].dimensions);
-					delete sizesObj[prop];
+					schemes.splice(i,1);
+					len = schemes.length;
+					i--;
 				} else {
-					var objDim = sizesObj[prop].dimensions;
-					sizesObj[prop].toFraction(objDim[0],objDim[1]);
 					//console.log("PASS: " + sizesObj[prop].dimensions);
 				}
 			}
-		}		
-		findWorkSizes(printX, printY, workX, workY);
-		deviationControl(WorkSizes);
-		appendResults(WorkSizes);
+			Output.appendResults(Layouts.schemeArr);
+		}
+	};
 
-		function appendResults(sizesObj) {
-			for (prop in sizesObj){
-				var size = sizesObj[prop].dimensions;
+
+	//Layout.Scheme Methods
+	Layouts.Scheme.prototype.toFraction = function() {
+		for (var i = 0; i < this.dimensions.length; i++) {
+			var dimString = String(this.dimensions[i]);
+			if (dimString.indexOf('.') < 0) { //Checks if string-number is whole number
+				this.dimFrac[i] = dimString; // Stores whole number dimension
+			} else {
+				var dec = '.' + dimString.split('.')[1]; // Parses Decimal from string 
+				var whole = dimString.split('.')[0]; // Parses whole number from string
+				var frac = function() {
+					var numerator = +dec * 16;
+					var denomArr = [[8,2],[4,4],[2,8],[1,16]];
+					for (var n = 0; n < denomArr.length; n++) {
+						if ((numerator % denomArr[n][0]) == 0) {
+							return (numerator / denomArr[n][0]) + "/" + denomArr[n][1];
+							break;
+						}
+					}
+				};	
+				this.dimFrac[i] = whole + " " + frac();
+			}	
+		}
+		console.log(this.dimFrac);
+	};
+		
+	var Output = {
+		appendResults: function(schemes) {
+			console.log("output.appendResults called");
+			for (var i = 0, len = schemes.length; i < len; i++ ){
+				var size = schemes[i].dimensions;
 				$("ul#resultsList").append(
-					"<li class=\"resultObj\" id=\"" + prop + "\"><button>" + size[0] + " x " + size[1] + "</button></li>"
+					"<li class=\"result-box\" id=\"layout" + i + "\"><button>" + size[0] + " x " + size[1] + "</button></li>"
 					);	
 			}
 		}
-
+	};
 		//on click dimObj triggers visual info
-		$('li.resultObj button').on('click', function(){
-			$("li.resultObj button").removeClass("highlight");
+		$('li.result-box button').on('click', function(){
+			$("li.result-box button").removeClass("highlight");
 			var resultKey = $(this).closest("li").attr("id");
 			$(this).addClass("highlight");	
 			console.log("element id: " + resultKey);	
 			console.log("object dimensions: " + WorkSizes[resultKey].dimensions);
 			console.log("object dimensions(frac): " + WorkSizes[resultKey].dimFrac);
 		});
-	});
-});

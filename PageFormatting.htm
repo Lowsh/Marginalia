@@ -15,38 +15,35 @@
 		</header>
 		
 		<main>
-			<div id="left-col" class="col">
+			<div id="input-row">
 				<form id="calc">
-					<div class="inputContain" id="print">
+					<div class="input-contain left" id="print">
 						<h3>Print Size</h3>
 						<p>Width (in.):</p>
 						<input type="number" id="printX" value="5.5">
 						<p>Height (in.):</p>
 						<input type="number" id="printY" value="8.5">
 					</div>
-					<div class="inputContain" id="work">
-						<h3>Work Medium Size</h3>
+					<div class="input-contain right" id="canvas">
+						<h3>Canvas Size</h3>
 						<p>Width (in.):</p>
-						<input type="number" id="workX" value="11">
+						<input type="number" id="canvasX" value="11">
 						<p>Height (in.):</p>
-						<input type="number" id="workY" value="14">
-						
+						<input type="number" id="canvasY" value="14">
 					</div>
-
-					
 				</form>
-				<div id="submission">
-					<input id="calculate" type="button" value="Calculate Options"></input>
-				</div>
-
-				<h3 class="noForm">Live Area Dimensions</h3>
-				<div id="results">
-					<ul id="resultsList">
-					</ul>
-				</div>
 			</div>
-			<div id="right-col" class="col">
-				<svg></svg>
+			<div id="output-row" class="clear">
+				<div id="left-col" class="col">
+					<h3 class="noForm">Live Area Dimensions</h3>
+					<div id="results">
+						<ul id="resultsList">
+						</ul>
+					</div>
+				</div>
+				<div id="right-col" class="col">
+					<canvas></canvas>
+				</div>
 			</div>
 		</main>
 	</body>

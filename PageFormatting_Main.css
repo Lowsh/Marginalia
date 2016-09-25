@@ -1,44 +1,36 @@
-html {
-	width:100%;
-	height:100%;
-	overflow-x:hidden;
-}
+
 * {
 	font-size: 16px;
 	font-family: arial, helvetica;
 	text-align:center;
 }
-body {
-	
-	overflow-x:hidden;
-}
-header {
-	margin: 0 auto 1em auto;
-	padding:1em 2em 1em 2em;
-	/*background-color: rgba(192,192,192,1.0);*/
-	overflow-x:hidden;
-	border: rgba(192,192,192,1.0) solid 3px;
-}
 
-main {
-	
+header {
+	margin: 0 auto 0 auto;
+	padding:1em 2em 1em 2em;
+	background-color:rgba(5, 185, 199, 1);
+	overflow-x:hidden;
+
+}
+body {
+	margin:0;
 }
 div#left-col {
+	margin: 1em 2.5% 0 2.5%;
+	width:45%;
 	float:left;
-	margin: 1em 0 0 2.5%;
-	width:47.5%;
 }
 div#right-col {
-	float:right;
-	background-color:black;
-	margin: 1em 2.5% 0 0;
-	width:47.5%;
+	background-color:gray;
+	margin: 1em 2.5% 0 2.5%;
+	width:45%;
 	height:500px;
+	float:right;
 }
 h1 {
 	font-size: 2em;
 	text-align:center;
-	color:rgba(192,192,192,1.0);
+	color:white;
 }
 h2 {
 	font-size: 1.75em;
@@ -48,104 +40,93 @@ h3 {
 	text-align: center;
 }
 h3.noForm{
-	color:rgba(192,192,192,1.0);
+	color:rgba(5, 185, 199, 1);
+}
+
+form#calc {
+	margin: -1em 0 1em 0;
+	width:100%;
+}
+div.input-contain {
+	width:50%;
+	padding: 0 0 2em 0;
+	background-color: rgba(5, 185, 199, 1.0);
+}
+div.input-contain h3, div.input-contain p {
+	color:white;
+	font-weight:bold;
+}
+
+div#results {
+	margin: 1em auto 1em auto;
+	padding:1em 1em 1em 1em;
+	max-width: 50%;
+	text-align:center;
+	border:rgba(5, 185, 199, 1.0) solid 3px;
+	min-height:50px;
+	font-weight:bold;
+	display:block;
+	color:rgba(5, 185, 199, 1.0);
+}
+div.input-contain input {
+	width:40%;
+}
+div#output-row{
+	margin-top:1em;
+	padding-top:1em;
 }
 ul#resultsList {
 	padding-left:0em;
 }
-.resultObj {
+.result-box {
 	list-style:none;
 	padding: .5em .5em .5em .5em;
 }
 
-.resultObj button {
+.result-box button {
 	display:block;
 	background:none;
 	border:none;
-	color:rgba(192,192,192,1.0);
+	color:rgba(5, 185, 199, 1);
 	font-weight:bold;
 	text-align:center;
 	margin: .5em auto .5em auto;
 }
 
-.resultObj button:focus{
+.result-box button:focus{
 	outline:none;
-	background-color: rgba(192,192,192,0.5);
+	background-color: rgba(5, 185, 199, 0.5);
 	color:white;
 }
-.resultObj button:hover{
+.result-box button:hover{
 	outline:none;
-	background-color: rgba(192,192,192,0.5);
+	background-color: rgba(5, 185, 199, 0.5);
 	color:white;
 }
-.resultObj button.highlight {
-	background-color: rgba(192,192,192,1.0);
+.result-box button.highlight {
+	background-color: rgba(5, 185, 199, 1.0);
 	color: white;
 	border:none;
 }
-form#calc {
-	margin: 0 auto 1em auto;
-	padding: 0em 1em 0em 1em;
-	/*width:95%;*/
-	text-align:center;
+.left {
+	float:left;
 }
-div.inputContain {
-	margin: 0 1em 2em 1em;
-	padding: 0 2em 2em 2em;
-	max-width:50%;
-	display:inline-block;
-	text-align:center;
+.right{
+	float:right;
 }
-div.inputContain h3, div.inputContain p {
-	color:white;
-	font-weight:bold;
-}
-div#print.inputContain {
-	background-color: rgba(192,192,192,1.0);
-}
-div#work.inputContain {
-	background-color: rgba(192,192,192,1.0);
-}
-div#results {
-	margin: 1em auto 1em auto;
-	padding:1em 1em 1em 1em;
-	max-width: 30%;
-	text-align:center;
-	border:rgba(192,192,192,1.0) solid 3px;
-	min-height:50px;
-	font-weight:bold;
-	display:block;
-	color:rgba(192,192,192,1.0);
-}
-div.inputContain input {
-	width:40%;
-}
-div#submission {
-	display:block;
-	text-align:center;
-	margin:1em auto 1em auto;
-}
-input#calculate {
-	padding:.5em;
-	margin:1em 5em 1em 5em;
-	background-color:rgba(192,192,192,0.80);
-	font-weight:bold;
-	color:white;
-	border:none;
-	display:inline-block;
-
+.clear {
+	clear:both;
 }
 
 
-/*@media screen and (max-width: 706px) {
-	div.inputContain {
-		width:95%;
-		max-width:95%;
-		padding:1em 0 3em 0;
-		margin: 1em 0 1em 0;
+
+@media screen and (max-width: 850px) {
+	div#left-col, div#right-col {
+		float:none;
+		width:auto;
 	}
 	div#results {
 		min-width:50%;
 		max-width:50%;
 	}
-}*/
+}
