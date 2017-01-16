@@ -82,29 +82,39 @@ var Layouts = {
 };
 
 
-//Layout.Scheme Methods
-Layouts.Scheme.prototype.toFraction = function() {
-	for (var i = 0; i < this.dimensions.length; i++) {
-		var dimString = String(this.dimensions[i]);
-		if (dimString.indexOf('.') < 0) { //Checks if string-number is whole number
-			this.dimFrac[i] = dimString; // Stores whole number dimension
-		} else {
-			var dec = '.' + dimString.split('.')[1]; // Parses Decimal from string 
-			var whole = dimString.split('.')[0]; // Parses whole number from string
-			var frac = function() {
-				var numerator = +dec * 16;
-				var denomArr = [[8,2],[4,4],[2,8],[1,16]];
-				for (var n = 0; n < denomArr.length; n++) {
-					if ((numerator % denomArr[n][0]) == 0) {
-						return (numerator / denomArr[n][0]) + "/" + denomArr[n][1];
-						break;
-					}
+var Convert = { // conversion methods eg. inches to pixels
+	toFraction: function(number) { 
+		var numString = String(number);
+		if (numString.indexOf('.') < 0) { //Checks if string-number is whole number
+			return numString; // just returns whole number as string
+		} else { // start dec to fraction conversion
+			var dec = '.' + numString.split('.')[1]; // Parses Decimal from string (index 1 of new split array)
+			var whole = numString.split('.')[0]; // Parses whole number from string (index 0 of new split array)
+			var Frac = {};
+				Frac.denom = Math.pow(10, (dec.length-1));
+				Frac.numer = +dec * Frac.denom;
+			var cDiv = false; // is common denominator found
+			var d = Frac.denom; // divisor starts at denominator
+			while ((!cDiv) && (d > 1)) { 
+				if ((Frac.numer % d == 0) && (Frac.denom % d == 0)) { // if both numerator and denominator are divisible by d then d is found
+					cDiv = true;
+				} else { 
+					d-- 
 				}
-			};	
-			this.dimFrac[i] = whole + " " + frac();
-		}	
+			}
+			if (cDiv) {
+				while (Frac.numer % d === 0) {
+					Frac.numer = Frac.numer / d;// divide numerator and denominator until both 
+					Frac.denom = Frac.denom / d;
+				}
+				console.log(Frac.numer + " " + Frac.denom + ", " + d);
+			}
+			return `${whole} ${Frac.numer}/${Frac.denom}`;
+		}
+	},
+	toPixels: function () {
+
 	}
-	console.log(this.dimFrac);
 };
 	
 var Output = {
