@@ -1,0 +1,56 @@
+Add Module for rendering to svg
+	Convert inches to pixels dimensions
+	0-1000px on X . Width is Constant at 1000px
+	Y is relative to X
+
+	Validation: if Y is larger than X then
+	Live area dimensions are centered so that
+		difference between x1(Media) and x1(Live) are same at x2 corresponding
+			(xM - xL)/2 = y 
+		coordinates for live area svg
+			(xL1, xL2) = ((xM1 + y), (xM2 - y)) 
+		y = x margin
+
+		if n columns
+			@ 1 : same
+			@ 2 : then find center xL
+				(xL2 - xL1)/n = c
+			if >2 : then divide by n (same for 2)
+				(xL2 - xL1)/n = c
+
+				then 
+					C1 = xL1 + C // scheme1.columns["c"+(n)]
+				and then
+					C2 = C1 + C
+
+			scheme1.columns = {}
+
+	scheme object properties:
+	>each property is expressed in inches OR unit of input (flex with metric comes later)
+	>a method that converts dims to pixels for visual output
+		>pixel dims should be stored (in same data structure or mirrored)
+
+	-x and y dimensions of media (user input)
+	-x and y dimensions of live area
+	-margin difference between media and live area dim
+		-x diff
+		-y diff
+	-number of rows and columns (user input)
+	- if column and rows are provided then gutters need to be defined
+		-default gutter value is 0
+
+
+	3 column 3 row
+	
+	scheme object
+	
+	dim array:
+		0. column array at index 1 = columns (.length of enclosing[0] = # of columns)
+			each index is an object by default all are set to same dim
+			contains 
+				width; height; gutter 
+
+
+		1. row array at index 2 = rows (.length of enclosing[1] = # of rows)
+
+
