@@ -4,7 +4,7 @@ Page Layout calculator and planner for comics
 Currently this web app just calculates options for live area dimensions for work media that is proportional to an end print size.
 The dimensions are calculated in Inches and the options divisible by 1/16th or 1/8th of an inch.
 
-##Planned Features
+## Planned Features
 
 1. Each dimension calculation constructs an object containing the following properties:
   1. Live area dimensions
